@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 //你好
+Route::get('/test/hello','TestController@hello');

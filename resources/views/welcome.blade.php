@@ -81,8 +81,9 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Hello Laravel
-                    
+                    Hello Laravel <br>
+                        {{--Laravel--}}
+                    1910 欢迎你
                 </div>
 
                 <div class="links">
