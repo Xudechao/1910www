@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/info',function(){
-    phpinfo();
+				phpinfo();
 });
 
 //你好
