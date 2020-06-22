@@ -80,7 +80,7 @@ class IndexController extends Controller
     }
 
     //登录2
-    public function loginDo(Request $request)
+     public function loginDo(Request $request)
     {
         $name = $request->input('name');
         $pass = $request->input('pass');
