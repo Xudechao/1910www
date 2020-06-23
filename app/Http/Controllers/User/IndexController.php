@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Model\UserModel;
 use Illuminate\Support\Facades\Cookie;
 
+
 class IndexController extends Controller
 {
     /**
@@ -134,7 +135,9 @@ class IndexController extends Controller
             return view('user.center');
         }else{
             //未登录
-            return redirect('/user/login');
+            //return redirect('/user/login');
+            echo "你还未登录，请先去登录";
+            header('Refresh:2;url=/user/login');
         }
     }
 }
