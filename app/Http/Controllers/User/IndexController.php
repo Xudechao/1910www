@@ -128,7 +128,7 @@ class IndexController extends Controller
     public function center()
     {
         //判断用户是否登录
-        //echo '<pre>';print_r($_COOKIE);echo'</pre>';
+        //iuecho '<pre>';print_r($_COOKIE);echo'</pre>';
         if(Cookie::has('uid'))
         {
             //已登录
