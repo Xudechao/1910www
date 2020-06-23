@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\UserModel;
+use Illuminate\Support\Facades\Cookie;
 
 class IndexController extends Controller
 {
@@ -94,18 +95,32 @@ class IndexController extends Controller
         $res = password_verify($pass,$user->password);
         if($res)
         {
+            //向客户端设置cookie
+            //setcookie('uid',$user->user_id,time()+3600,'/');
+            //setcookie('name',$user->user_name,time()+3600,'/');
+            Cookie::queue('uid',$user->user_id,60);
+            Cookie::queue('name',$user->user_name,60);
             echo "登录成功";
             header('Refresh:2;url=/user/center');
         }else{
-            echo "用户与密码不一致";
+            echo "用户与密码不一致，请重新登录";
             header('Refresh:2;url=/user/login');
         }
 
     }
 
     //用户中心
-    public function center(){
-
-        return view('user.center');
+    public function center()
+    {
+        //判断用户是否登录
+        //echo '<pre>';print_r($_COOKIE);echo'</pre>';
+        if(Cookie::has('uid'))
+        {
+            //已登录
+            return view('user.center');
+        }else{
+            //未登录
+            return redirect('/user/login');
+        }
     }
 }
