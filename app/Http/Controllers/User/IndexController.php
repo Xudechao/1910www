@@ -9,13 +9,19 @@ use Illuminate\Support\Facades\Cookie;
 
 class IndexController extends Controller
 {
-    //注册1
+    /**
+     * 用户注册1
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function reg()
     {
         return view('user.reg');
     }
 
-    //注册2
+    /**
+     * 用户注册2
+     * @param Request $request
+     */
     public function regDo(Request $request)
     {
         $pass1 = $request->input('password');
@@ -73,14 +79,19 @@ class IndexController extends Controller
 
     }
 
-    //登录1
+    /**
+     * 用户登录1
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function login()
     {
 
         return view('user.login');
     }
 
-    //登录2
+    /**
+     * 用户登录2
+     */
      public function loginDo(Request $request)
     {
         $name = $request->input('name');
@@ -109,7 +120,10 @@ class IndexController extends Controller
 
     }
 
-    //用户中心
+    /**
+     * 用户中心
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function center()
     {
         //判断用户是否登录
