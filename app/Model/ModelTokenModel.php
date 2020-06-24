@@ -4,8 +4,8 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TokenModel extends Model
+class ModelTokenModel extends Model
 {
    public $table = 'p_tokens';
-       public $timestamps = false;
+   public $timestamps = false;
 }
