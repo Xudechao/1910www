@@ -23,6 +23,8 @@ Route::get('/info',function(){
 Route::get('/test/hello','TestController@hello');
 Route::get('/test/redis1','TestController@redis1');
 
+Route::get('/test1','TestController@test1');
+
 //商品
 Route::get('/goods/detail','Goods\GoodsController@detail');  // 商品详情
 //Route::get('/api/goods/info','Goods\GoodsController@goodsInfo');
@@ -35,3 +37,6 @@ Route::get('/user/login','User\IndexController@login'); // 前台登录
 Route::post('/user/loginDo','User\IndexController@loginDo'); // 后台登录
 
 Route::get('/user/center','User\IndexController@center'); // 用户
+
+//API
+Route::post('/api/user/reg','Api\UserController@reg');
