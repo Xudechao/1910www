@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Model\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use App\Model\TokenModel;
 
 class UserController extends Controller
 {
@@ -93,4 +95,72 @@ class UserController extends Controller
         return $response;
     }
 
+    /**
+     * 用户登录
+     * @param Request $request
+     */
+    public function login(Request $request)
+    {
+        $name = $request->input('name');
+        $pass = $request->input('pass');
+
+        // var_dump($name);
+        // var_dump($pass);die;
+        //echo '用户输入的密码：'. $pass;echo '<br>';
+        //验证登录信息
+        $user = UserModel::where(['user_name' => $name])->first();
+        //echo '数据库的密码：'. $user->password;echo '</br>';
+
+        //验证密码
+        $res = password_verify($pass, $user->password);
+        if ($res) {
+            //生成token
+            $str = $user->user_id . $user->user_name . time();
+            $token = substr(md5($str), 10, 16) . substr(md5($str), 0, 10);
+
+            //保存token,后续验证使用
+            $data = [
+                'uid' => $user->user_id,
+                'token' => $token
+            ];
+
+            TokenModel::insert($data);
+            $response = [
+                'errno' => 0,
+                'msg' => 'ok',
+                'token' => $token
+            ];
+
+        }else{
+            $response = [
+                'errno' => 50006,
+                'msg' => '用户名与密码不一致,请重新登录',
+            ];
+
+        }
+        return $response;
+    }
+
+    /**
+     * 个人中心
+     */
+    public function center()
+    {
+        //判断用户是否登录 ,判断是否有 uid 字段
+        $token = $_GET['token'];
+        //检查token是否有效
+        $res = TokenModel::where(['token'=>$token])->first();
+
+        if($res)
+        {
+            $uid = $res->uid;
+            $user_info = UserModel::find($uid);
+            //已登录
+            echo $user_info->user_name . " 欢迎来到个人中心";
+        }else{
+            //未登录
+            echo "请登录";
+        }
+
+    }
 }
