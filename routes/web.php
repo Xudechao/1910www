@@ -37,3 +37,6 @@ Route::get('/user/login','User\IndexController@login'); // 前台登录
 Route::post('/user/loginDo','User\IndexController@loginDo'); // 后台登录
 
 Route::get('/user/center','User\IndexController@center'); // 用户
+
+//API
+Route::post('/api/user/reg','Api\UserController@reg');
