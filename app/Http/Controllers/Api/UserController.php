@@ -7,6 +7,8 @@ use App\Model\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use App\Model\TokenModel;
+use Illuminate\Support\Facades\Redis;
+
 
 class UserController extends Controller
 {
@@ -113,12 +115,15 @@ class UserController extends Controller
             $token = substr(md5($str), 10, 16) . substr(md5($str), 0, 10);
 
             //保存token,后续验证使用
+
             $data = [
                 'uid' => $user->user_id,
                 'token' => $token
             ];
-
             TokenModel::insert($data);
+
+            //Redis::set($token,$user->user_id);
+
             $response = [
                 'errno' => 0,
                 'msg' => 'ok',
@@ -144,6 +149,7 @@ class UserController extends Controller
         $token = $_GET['token'];
         //检查token是否有效
         $res = TokenModel::where(['token'=>$token])->first();
+        //$uid = Redis::get($token);
 
         if($res)
         {

@@ -22,15 +22,16 @@ class GoodsController extends Controller
         echo '<pre>';print_r($info);echo '</pre>';
     }
 
-//    public function goodsInfo()
-//    {
-//        $goods_id = $_GET['id'];
-//        echo 'goods_id: '. $goods_id;echo '<br>';
-//
-//        //查询商品详情nl
-//        $info = GoodsModel::where(['goods_id'=>$goods_id])->get()->toArray();
-//        //$info = GoodsModel::find($goods_id)->toArray();
-//        echo '<pre>';print_r($info);echo '</pre>';
-//        return json_encode($info);
-//    }
+    public function goodsInfo()
+    {
+        $goods_id = $_GET['id'];
+        echo 'goods_id: '. $goods_id;echo '<br>';
+
+        //查询商品详情nl
+        //$info = GoodsModel::where(['goods_id'=>$goods_id])->get()->toArray();
+        $info = GoodsModel::find($goods_id);
+        var_dump($info);
+        echo '<pre>';print_r($info);echo '</pre>';
+        return json_encode($info);
+    }
 }
