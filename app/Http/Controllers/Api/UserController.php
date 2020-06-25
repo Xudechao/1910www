@@ -116,13 +116,14 @@ class UserController extends Controller
 
             //保存token,后续验证使用
 
-            $data = [
-                'uid' => $user->user_id,
-                'token' => $token
-            ];
-            TokenModel::insert($data);
+            //$data = [
+            //    'uid' => $user->user_id,
+            //    'token' => $token
+            //    'expire' => time() + 7200
+            //];
+            //TokenModel::insert($data);
 
-            //Redis::set($token,$user->user_id);
+            Redis::set($token,$user->user_id);
 
             $response = [
                 'errno' => 0,
@@ -148,12 +149,12 @@ class UserController extends Controller
         //判断用户是否登录 ,判断是否有 uid 字段
         $token = $_GET['token'];
         //检查token是否有效
-        $res = TokenModel::where(['token'=>$token])->first();
-        //$uid = Redis::get($token);
+        //$res = TokenModel::where(['token'=>$token])->first();
+        $uid = Redis::get($token);
 
-        if($res)
+        if($uid)
         {
-            $uid = $res->uid;
+            //$uid = $res->uid;
             $user_info = UserModel::find($uid);
             //已登录
             echo $user_info->user_name . " 欢迎来到个人中心";
