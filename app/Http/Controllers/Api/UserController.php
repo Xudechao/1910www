@@ -144,12 +144,22 @@ class UserController extends Controller
     /**
      * 个人中心
      */
-    public function center()
+    public function center(Request $request)
     {
         //判断用户是否登录 ,判断是否有 uid 字段
-        $token = $_GET['token'];
-        //检查token是否有效
-        //$res = TokenModel::where(['token'=>$token])->first();
+        $token = $request->input('token');
+//if(isset($_GET['token'])){
+//  $token = $_GET['token'];
+// }else{
+//  $response = [
+//     'errno' => 50007,
+//      'msg' => '请先登录'
+//  ];
+//  return $response;
+//}
+//
+// //检查token是否有效
+// //$res = TokenModel::where(['token'=>$token])->first();
         $uid = Redis::get($token);
 
         if($uid)
@@ -159,9 +169,60 @@ class UserController extends Controller
             //已登录
             echo $user_info->user_name . " 欢迎来到个人中心";
         }else{
-            //未登录
-            echo "请登录";
+            $response = [
+                'errno' => 50008,
+                'msg' => '请先登录'
+            ];
+            return $response;
         }
+
+    }
+
+    /**
+     *我的订单
+     */
+    public function orders()
+    {
+        //订单信息
+        $arr = [
+            '3845842525454345354',
+            '792586234e254556354',
+            '1235877363323345354',
+            '2312435353454345354',
+            '7825830953454345354',
+        ];
+
+
+        $response = [
+            'errno' => 0,
+            'msg'   => 'OK',
+            'data'  => [
+                'orders'    => $arr
+            ]
+        ];
+
+        return $response;
+    }
+
+    /**
+     * 购物车接口
+     */
+    public function cart()
+    {
+
+        $goods = [
+            987,
+            654,
+            321
+        ];
+
+        $response = [
+            'errno' => 0,
+            'msg'   => 'ok',
+            'data'  => $goods
+        ];
+
+        return $response;
 
     }
 }
