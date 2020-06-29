@@ -13,7 +13,6 @@ class TestController extends Controller
         echo date('Y-m-d H:i:s');
     }
 
-
     /**
      * redis测试
      */
@@ -49,6 +48,7 @@ class TestController extends Controller
         $b_url = 'http://www.1910.com/secret?data='.$data.'&sign='.$sign;
         echo $b_url;
     }
+
     /**
      * 接收数据
      */
@@ -66,6 +66,7 @@ class TestController extends Controller
             echo "验签失败";
         }
     }
+
     /**
      *
      */
@@ -86,5 +87,61 @@ class TestController extends Controller
         $response = file_get_contents($url);
         echo $response;
 
+    }
+
+    /**
+     * 请求接口
+     */
+    public function sendDate()
+    {
+        $url = 'http://api.1910.com/test/receive?name=zhangsan&age=100';
+        $response = file_get_contents($url);
+
+        echo $response;
+    }
+
+    /**
+     * 想接口post数据
+     */
+    public function postData(){
+        $key = '98k';
+        $data = [
+            'user_name' => 'xudechao',
+            'user_age'  => 18
+        ];
+
+        $str = json_encode($data).$key;
+        $sign = sha1($str);
+        $send_data = [
+            'data'  => json_encode($data),
+            'sign'  => $sign
+        ];
+        $url = 'http://api.1910.com/test/receive-post';
+        $ch = curl_init();
+        $url = $url . '?send_data='.json_encode($send_data).'&sign='.$sign;
+        //php 发起网络请求
+        $response = file_get_contents($url);
+        echo $response;
+
+        //  配置参数
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$send_data);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+
+        $response = curl_exec($ch);
+
+        // 检测错误
+        $errno = curl_errno($ch);
+        $errmsg = curl_error($ch);
+
+        if($errno)
+        {
+            echo '错误码： '.$errno;echo '</br>';
+            var_dump($errmsg);
+            die;
+        }
+        curl_close($ch);
+        echo $response;
     }
 }
