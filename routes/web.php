@@ -26,8 +26,9 @@ Route::get('/test/redis1','TestController@redis1');
 Route::get('/test/sign1','TestController@sign1');
 Route::get('/secret','TestController@secret');
 Route::get('/test/www','TestController@www');
-Route::get('/test/send-data','TestController@sendDate');
-Route::post('/test/post-data','TestController@postData');
+Route::get('/test/send-data','TestController@sendData');
+Route::get('/test/post-data','TestController@postData');
+Route::get('/test/encrypt1','TestController@encrypt1'); //对称加密
 
 
 //商品
