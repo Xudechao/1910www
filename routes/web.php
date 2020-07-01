@@ -30,6 +30,9 @@ Route::get('/test/send-data','TestController@sendData');
 Route::get('/test/post-data','TestController@postData');
 Route::get('/test/encrypt1','TestController@encrypt1'); //对称加密
 Route::get('/test/rsa/encrypt1','TestController@rsaEncrypt1'); //对称加密
+Route::get('/test/send-data1','TestController@sendData1');
+Route::get('/test/send-b','TestController@sendB');
+
 
 
 //商品

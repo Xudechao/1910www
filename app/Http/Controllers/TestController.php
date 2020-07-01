@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
+
 class TestController extends Controller
 {
     public function hello()
@@ -215,4 +216,69 @@ class TestController extends Controller
 
         var_dump($dec_data);
     }
+
+    public function sendData1()
+    {
+        //echo __METHOD__;
+        $data = "小孩子才分对错";
+
+        //使用对方的公钥加密
+        $key_content = file_get_contents(storage_path('keys/b_pub.key'));     //读取公钥内容
+        $pub_key = openssl_get_publickey($key_content);
+        openssl_public_encrypt($data,$enc_data,$pub_key);           //加密
+
+        $base64_data = base64_encode($enc_data);
+
+        //使用get发送
+        $url = 'http://api.1910.com/rsa/get-data1?data='.urlencode($base64_data);
+        $response = file_get_contents($url);
+        echo $response;
+
+        //解密响应数据
+        $json_arr = json_decode($response,true);
+        echo '<pre>';print_r($json_arr);echo '</pre>';
+
+        $enc_data = base64_decode($json_arr['data']);
+        //解密
+        $key_content = file_get_contents(storage_path('keys/a_priv.key'));     //读取私钥
+        $key = openssl_get_privatekey($key_content);
+        openssl_private_decrypt($enc_data,$dec_data,$key);
+        echo $dec_data;
+
+
+    }
+
+
+    public function sendB()
+    {
+
+        $data = "小孩子才分对错";
+
+        //公钥加密
+        $key = openssl_get_publickey( file_get_contents(storage_path('keys/b_pub.key')) );     //读取公钥
+        openssl_public_encrypt($data,$enc_data,$key);
+
+        //base64编码 密文
+        $base64_data = base64_encode($enc_data);
+
+        $url = 'http://api.1910.com/get-a?data='.urlencode($base64_data);
+
+        //接收响应
+        $response = file_get_contents($url);
+        //echo 'response: '.$response;
+        $json_arr = json_decode($response,true);
+
+        $enc_data = base64_decode($json_arr['data']);       //密文
+        //解密
+        $key = openssl_get_privatekey(file_get_contents(storage_path('keys/a_priv.key')));
+        openssl_private_decrypt($enc_data,$dec_data,$key);
+
+        echo $dec_data;die;
+
+
+
+
+    }
+
+
 }
